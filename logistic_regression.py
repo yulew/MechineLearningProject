@@ -2,6 +2,8 @@ __author__ = 'Yule'
 import numpy as np
 import pandas as pd
 from sklearn import linear_model, datasets
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
 
 
 # Maximum number of iterations.  Continue until this limit, or when error change is below tol.
@@ -60,6 +62,14 @@ def logistic_regression(second,Percentage_train):
 
     print("Total training accuracy:",logreg.score(X,T))
     print("Total test accuracy:",logreg.score(X_test,T_test))
+    logreg = linear_model.LogisticRegression(C=1e5)
+    # we create an instance of Neighbours Classifier and fit the data.
+    T_pred=logreg.fit(X, T).predict(X_test)
+
+    cnf_matrix = confusion_matrix(T_test, T_pred)
+    print("Confusion Matrix:\n%s" %cnf_matrix)
+    print("Classfication report:\n%s" %classification_report(T_test, T_pred))
+    
     print("Accuracy for each location:")
     for l in location:
         data_path = second_path_base + l + '/data_shuffle.csv'
